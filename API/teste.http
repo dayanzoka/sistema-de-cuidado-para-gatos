@@ -1,0 +1,109 @@
+
+### listar os usuários
+GET http://localhost:5221/usuarios
+
+### criar novo usuário
+POST http://localhost:5221/usuarios
+Content-Type: application/json
+
+{
+  "Nome": "dayane",
+  "Email": "day@gmail.com",
+  "Senha": "1234"
+}
+
+### atualizar usuário
+PUT http://localhost:5221/usuarios/1
+Content-Type: application/json
+
+{
+  "Nome": "dayane dias",
+  "Email": "dayane@gmail.com",
+  "Senha": "4321"
+}
+
+### deletar usuário
+DELETE http://localhost:5221/usuarios/1
+
+### listar os serviços
+GET http://localhost:5221/servicos
+
+### criar um novo serviço
+POST http://localhost:5221/servicos
+Content-Type: application/json
+
+{
+  "nomeServico": "banho e tosa",
+  "descricao": "serviço de banho e tosa para gatos",
+  "localizacao": "Rua miau miau, 123"
+}
+
+### atualizar um serviço 
+PUT http://localhost:5221/servicos/1
+Content-Type: application/json
+
+{
+  "nomeServico": "limpeza dos dentes",
+  "descricao": "limpeza completa dos dentes de seu gatinho",
+  "localizacao": "Rua meow meow, 321"
+}
+
+### deletar um serviço
+DELETE http://localhost:5221/servicos/1
+
+
+### listar todos os agendamentos
+GET http://localhost:5221/agendamentos
+
+### criar um novo agendamento
+
+POST  http://localhost:5221/agendamentos
+Content-Type: application/json
+
+{
+  "usuarioId": 1,
+  "servicoId": 1,
+  "dataHora": "2024-10-22T10:00:00"
+}
+
+### atualizar um agendamento
+PUT http://localhost:5221/agendamentos/1
+Content-Type: application/json
+
+{
+  "usuarioId": 1,
+  "servicoId": 1,
+  "dataAgendamento": "2024-10-25T14:00:00"
+}
+
+### deletar um agendamento
+DELETE http://localhost:5221/agendamentos/1
+
+
+### listar as avaliações
+GET http://localhost:5221/avaliacoes
+
+### criar uma nova avaliação
+POST http://localhost:5221/avaliacoes
+Content-Type: application/json
+
+{
+  "usuarioId": 1,
+  "servicoId": 1,
+  "comentario": "serviço muito bom! :)",
+  "nota": 5
+}
+
+### atualizar uma avaliação existente
+PUT http://localhost:5221/avaliacoes/1
+Content-Type: application/json
+
+{
+  "usuarioId": 1,
+  "servicoId": 1,
+  "comentario": "serviço excelente!! :D",
+  "nota": 4
+}
+
+### deletar uma avaliação
+DELETE http://localhost:5221/avaliacoes/1
