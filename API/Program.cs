@@ -81,6 +81,15 @@ app.MapGet("/agendamentos/listara", async (AppDbContext db) => await db.Agendame
 
 app.MapPost("/agendamentos/cadastrara", async (Agendamento agendamento, AppDbContext db) =>
 {
+    var usuario = await db.Usuarios.FindAsync(agendamento.UsuarioId);
+    if (usuario == null) return Results.NotFound("Usuário não encontrado");
+
+    var servico = await db.Servicos.FindAsync(agendamento.ServicoId);
+    if (servico == null) return Results.NotFound("Serviço não encontrado");
+
+    agendamento.Usuario = usuario;
+    agendamento.Servico = servico;
+
     db.Agendamentos.Add(agendamento);
     await db.SaveChangesAsync();
     return Results.Created($"/agendamentos/{agendamento.Id}", agendamento);
@@ -91,8 +100,6 @@ app.MapPut("/agendamentos/atualizara/{id}", async (int id, Agendamento updatedAg
     var agendamento = await db.Agendamentos.FindAsync(id);
     if (agendamento == null) return Results.NotFound();
 
-    agendamento.UsuarioId = updatedAgendamento.UsuarioId;
-    agendamento.ServicoId = updatedAgendamento.ServicoId;
     agendamento.DataHora = updatedAgendamento.DataHora;
 
     await db.SaveChangesAsync();
@@ -114,6 +121,15 @@ app.MapGet("/avaliacoes/listarv", async (AppDbContext db) => await db.Avaliacoes
 
 app.MapPost("/avaliacoes/cadastrarv", async (Avaliacao avaliacao, AppDbContext db) =>
 {
+    var usuario = await db.Usuarios.FindAsync(avaliacao.UsuarioId);
+    if (usuario == null) return Results.NotFound("Usuário não encontrado");
+
+    var servico = await db.Servicos.FindAsync(avaliacao.ServicoId);
+    if (servico == null) return Results.NotFound("Serviço não encontrado");
+
+    avaliacao.Usuario = usuario;
+    avaliacao.Servico = servico;
+
     db.Avaliacoes.Add(avaliacao);
     await db.SaveChangesAsync();
     return Results.Created($"/avaliacoes/{avaliacao.Id}", avaliacao);
