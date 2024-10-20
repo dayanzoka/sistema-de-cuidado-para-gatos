@@ -1,9 +1,9 @@
 
 ### listar os usuários
-GET http://localhost:5221/usuarios
+GET http://localhost:5221/usuarios/listar
 
-### criar novo usuário
-POST http://localhost:5221/usuarios
+### cadastrar novo usuário
+POST http://localhost:5221/usuarios/cadastrar
 Content-Type: application/json
 
 {
@@ -13,7 +13,7 @@ Content-Type: application/json
 }
 
 ### atualizar usuário
-PUT http://localhost:5221/usuarios/1
+PUT http://localhost:5221/usuarios/atualizar/1
 Content-Type: application/json
 
 {
@@ -23,13 +23,13 @@ Content-Type: application/json
 }
 
 ### deletar usuário
-DELETE http://localhost:5221/usuarios/1
+DELETE http://localhost:5221/usuarios/deletar/1
 
 ### listar os serviços
-GET http://localhost:5221/servicos
+GET http://localhost:5221/servicos/listars
 
-### criar um novo serviço
-POST http://localhost:5221/servicos
+### cadastrar um novo serviço
+POST http://localhost:5221/servicos/cadastrars
 Content-Type: application/json
 
 {
@@ -39,7 +39,7 @@ Content-Type: application/json
 }
 
 ### atualizar um serviço 
-PUT http://localhost:5221/servicos/1
+PUT http://localhost:5221/servicos/atualizars/6
 Content-Type: application/json
 
 {
@@ -49,15 +49,15 @@ Content-Type: application/json
 }
 
 ### deletar um serviço
-DELETE http://localhost:5221/servicos/1
+DELETE http://localhost:5221/servicos/deletars/1
 
 
 ### listar todos os agendamentos
-GET http://localhost:5221/agendamentos
+GET http://localhost:5221/agendamentos/listara
 
-### criar um novo agendamento
+### cadastrar um novo agendamento
 
-POST  http://localhost:5221/agendamentos
+POST  http://localhost:5221/agendamentos/cadastrara
 Content-Type: application/json
 
 {
@@ -67,7 +67,7 @@ Content-Type: application/json
 }
 
 ### atualizar um agendamento
-PUT http://localhost:5221/agendamentos/1
+PUT http://localhost:5221/agendamentos/atualizara/1
 Content-Type: application/json
 
 {
@@ -77,14 +77,14 @@ Content-Type: application/json
 }
 
 ### deletar um agendamento
-DELETE http://localhost:5221/agendamentos/1
+DELETE http://localhost:5221/agendamentos/deletara/1
 
 
 ### listar as avaliações
-GET http://localhost:5221/avaliacoes
+GET http://localhost:5221/avaliacoes/listarv
 
-### criar uma nova avaliação
-POST http://localhost:5221/avaliacoes
+### cadastrar uma nova avaliação
+POST http://localhost:5221/avaliacoes/cadastrarv
 Content-Type: application/json
 
 {
@@ -95,7 +95,7 @@ Content-Type: application/json
 }
 
 ### atualizar uma avaliação existente
-PUT http://localhost:5221/avaliacoes/1
+PUT http://localhost:5221/avaliacoes/atualizarv/1
 Content-Type: application/json
 
 {
@@ -106,4 +106,4 @@ Content-Type: application/json
 }
 
 ### deletar uma avaliação
-DELETE http://localhost:5221/avaliacoes/1
+DELETE http://localhost:5221/avaliacoes/deletarv/1
