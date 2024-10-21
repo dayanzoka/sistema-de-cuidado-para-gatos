@@ -23,7 +23,7 @@ Content-Type: application/json
 }
 
 ### deletar usuário
-DELETE http://localhost:5221/usuarios/deletar/1
+DELETE http://localhost:5221/usuarios/deletar/10
 
 ### listar os serviços
 GET http://localhost:5221/servicos/listars
@@ -39,7 +39,7 @@ Content-Type: application/json
 }
 
 ### atualizar um serviço 
-PUT http://localhost:5221/servicos/atualizars/6
+PUT http://localhost:5221/servicos/atualizars/1
 Content-Type: application/json
 
 {
@@ -49,7 +49,7 @@ Content-Type: application/json
 }
 
 ### deletar um serviço
-DELETE http://localhost:5221/servicos/deletars/1
+DELETE http://localhost:5221/servicos/deletars/7
 
 
 ### listar todos os agendamentos
@@ -61,8 +61,8 @@ POST  http://localhost:5221/agendamentos/cadastrara
 Content-Type: application/json
 
 {
-  "usuarioId": 1,
-  "servicoId": 1,
+  "usuarioId": 11,
+  "servicoId": 8,
   "dataHora": "2024-10-22T10:00:00"
 }
 
@@ -88,10 +88,10 @@ POST http://localhost:5221/avaliacoes/cadastrarv
 Content-Type: application/json
 
 {
-  "usuarioId": 1,
-  "servicoId": 1,
+  "usuarioId": 11,
+  "servicoId": 8,
   "comentario": "serviço muito bom! :)",
-  "nota": 5
+  "nota": 8
 }
 
 ### atualizar uma avaliação existente
@@ -102,7 +102,7 @@ Content-Type: application/json
   "usuarioId": 1,
   "servicoId": 1,
   "comentario": "serviço excelente!! :D",
-  "nota": 4
+  "nota": 10
 }
 
 ### deletar uma avaliação

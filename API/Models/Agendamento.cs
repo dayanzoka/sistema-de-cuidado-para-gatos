@@ -5,8 +5,8 @@ namespace ServicosParaGatos.Models
         public int Id { get; set; }
         public DateTime DataHora { get; set; }
         public int UsuarioId { get; set; }
-        public Usuario Usuario { get; set; } = null!;
+        public Usuario Usuario { get; set; } 
         public int ServicoId { get; set; }
-        public Servico Servico { get; set; } = null!;
+        public Servico Servico { get; set; } 
     }
 }

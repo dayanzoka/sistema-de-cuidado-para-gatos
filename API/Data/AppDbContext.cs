@@ -17,26 +17,6 @@ namespace ServicosParaGatos.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-          
-            modelBuilder.Entity<Agendamento>()
-                .HasOne(a => a.Usuario)
-                .WithMany(u => u.Agendamentos)
-                .HasForeignKey(a => a.UsuarioId);
-
-            modelBuilder.Entity<Agendamento>()
-                .HasOne(a => a.Servico)
-                .WithMany(s => s.Agendamentos)
-                .HasForeignKey(a => a.ServicoId);
-
-            modelBuilder.Entity<Avaliacao>()
-                .HasOne(av => av.Usuario)
-                .WithMany(u => u.Avaliacoes)
-                .HasForeignKey(av => av.UsuarioId);
-
-            modelBuilder.Entity<Avaliacao>()
-                .HasOne(av => av.Servico)
-                .WithMany(s => s.Avaliacoes)
-                .HasForeignKey(av => av.ServicoId);
         }
     }
 }
