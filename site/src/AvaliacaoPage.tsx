@@ -102,15 +102,18 @@ function AvaliacaoPage() {
   return (
     <div>
       <h2>Avaliações</h2>
-      <ul>
+      <ul className="lista-avaliacoes">
         {avaliacoes.map((av) => (
-          <li key={av.id}>
+          <li key={av.id} className="avaliacao-item">
             {editandoAvaliacao && editandoAvaliacao.id === av.id ? (
-              <div>
+              <div className="avaliacao-edicao">
                 <select
                   value={editandoAvaliacao.usuarioId}
                   onChange={(e) =>
-                    setEditandoAvaliacao({ ...editandoAvaliacao, usuarioId: parseInt(e.target.value) })
+                    setEditandoAvaliacao({
+                      ...editandoAvaliacao,
+                      usuarioId: parseInt(e.target.value),
+                    })
                   }
                 >
                   <option value="">Selecione um usuário</option>
@@ -123,7 +126,10 @@ function AvaliacaoPage() {
                 <select
                   value={editandoAvaliacao.servicoId}
                   onChange={(e) =>
-                    setEditandoAvaliacao({ ...editandoAvaliacao, servicoId: parseInt(e.target.value) })
+                    setEditandoAvaliacao({
+                      ...editandoAvaliacao,
+                      servicoId: parseInt(e.target.value),
+                    })
                   }
                 >
                   <option value="">Selecione um serviço</option>
@@ -152,48 +158,56 @@ function AvaliacaoPage() {
                 <button onClick={cancelarEdicao}>Cancelar</button>
               </div>
             ) : (
-              <div>
-                Usuário {usuarios.find((u) => u.id === av.usuarioId)?.nome || av.usuarioId} avaliou o serviço {servicos.find((s) => s.id === av.servicoId)?.nomeServico || av.servicoId} com nota {av.nota}
-                <br />
-                Comentário: {av.comentario}
-                <button onClick={() => iniciarEdicao(av)}>Editar</button>
-                <button onClick={() => deletarAvaliacao(av.id)}>Excluir</button>
+              <div className="avaliacao-info">
+                <strong>
+                  Usuário {usuarios.find((u) => u.id === av.usuarioId)?.nome || av.usuarioId}
+                </strong>{' '}
+                avaliou o serviço{' '}
+                {servicos.find((s) => s.id === av.servicoId)?.nomeServico || av.servicoId} com nota{' '}
+                {av.nota}
+                <p>Comentário: {av.comentario}</p>
+                <div className="avaliacao-actions">
+                  <button onClick={() => iniciarEdicao(av)}>Editar</button>
+                  <button onClick={() => deletarAvaliacao(av.id)}>Excluir</button>
+                </div>
               </div>
             )}
           </li>
         ))}
       </ul>
       <h3>Adicionar Avaliação</h3>
-      <select value={usuarioId || ''} onChange={(e) => setUsuarioId(parseInt(e.target.value))}>
-        <option value="">Selecione um usuário</option>
-        {usuarios.map((u) => (
-          <option key={u.id} value={u.id}>
-            {u.nome}
-          </option>
-        ))}
-      </select>
-      <select value={servicoId || ''} onChange={(e) => setServicoId(parseInt(e.target.value))}>
-        <option value="">Selecione um serviço</option>
-        {servicos.map((s) => (
-          <option key={s.id} value={s.id}>
-            {s.nomeServico}
-          </option>
-        ))}
-      </select>
-      <textarea
-        placeholder="Comentário"
-        value={comentario}
-        onChange={(e) => setComentario(e.target.value)}
-      />
-      <input
-        type="number"
-        min="1"
-        max="10"
-        placeholder="Nota"
-        value={nota}
-        onChange={(e) => setNota(parseInt(e.target.value))}
-      />
-      <button onClick={adicionarAvaliacao}>Adicionar</button>
+      <div className="form-adicionar">
+        <select value={usuarioId || ''} onChange={(e) => setUsuarioId(parseInt(e.target.value))}>
+          <option value="">Selecione um usuário</option>
+          {usuarios.map((u) => (
+            <option key={u.id} value={u.id}>
+              {u.nome}
+            </option>
+          ))}
+        </select>
+        <select value={servicoId || ''} onChange={(e) => setServicoId(parseInt(e.target.value))}>
+          <option value="">Selecione um serviço</option>
+          {servicos.map((s) => (
+            <option key={s.id} value={s.id}>
+              {s.nomeServico}
+            </option>
+          ))}
+        </select>
+        <textarea
+          placeholder="Comentário"
+          value={comentario}
+          onChange={(e) => setComentario(e.target.value)}
+        />
+        <input
+          type="number"
+          min="1"
+          max="10"
+          placeholder="Nota"
+          value={nota}
+          onChange={(e) => setNota(parseInt(e.target.value))}
+        />
+        <button onClick={adicionarAvaliacao}>Adicionar</button>
+      </div>
     </div>
   );
 }

@@ -1,38 +1,234 @@
+/* Variáveis de cores */
+:root {
+  --primary-color: #6a1b9a;
+  --secondary-color: #ab47bc;
+  --background-color: #8d5782;
+  --text-color: #000000;
+  --button-color: #8e24aa;
+  --button-hover-color: #6a1b9a;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-image: url('./img/sky-noite.png'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: var(--text-color);
+  min-height: 100vh;
+}
+
 .App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  background-color: rgba(220, 215, 224, 0.2); 
+  padding: 10px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+header h1 {
+  color: var(--primary-color);
+  margin-bottom: 10px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+nav {
+  margin-bottom: 10px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+nav .button {
+  margin: 0 5px;
+}
+
+/* Estilos dos botões */
+.button {
+  padding: 10px 20px;
+  background-color: var(--button-color);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 1em;
+}
+
+.button:hover {
+  background-color: var(--button-hover-color);
+}
+
+/* Container principal */
+.container {
+  flex: 1;
+  width: 90%;
+  max-width: 1200px;
+  margin: 20px auto;
+  background-color: rgba(220, 215, 224, 0.2); 
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.home {
+  text-align: center;
+}
+
+footer {
+  background-color: rgba(220, 215, 224, 0.2); 
+  text-align: center;
+  padding: 10px;
+}
+
+footer p {
+  color: var(--primary-color);
+}
+
+/* Usuários Page */
+.lista-usuarios {
+  list-style: none;
+  padding: 0;
+}
+
+.usuario-item {
+  background-color: #fff;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.usuario-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.usuario-actions button {
+  margin-left: 10px;
+}
+
+.usuario-edicao input {
+  margin-bottom: 10px;
+  width: calc(100% - 20px);
+}
+
+.form-adicionar input {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* Serviços Page */
+.lista-servicos {
+  list-style: none;
+  padding: 0;
+}
+
+.servico-item {
+  background-color: #fff;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.servico-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.servico-actions button {
+  margin-left: 10px;
+}
+
+.servico-edicao input {
+  margin-bottom: 10px;
+  width: calc(100% - 20px);
+}
+
+/* Agendamentos Page */
+.lista-agendamentos {
+  list-style: none;
+  padding: 0;
+}
+
+.agendamento-item {
+  background-color: #fff;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.agendamento-info {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.agendamento-actions {
+  margin-top: 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.agendamento-actions button {
+  margin-right: 10px;
+}
+
+.agendamento-edicao input,
+.agendamento-edicao select {
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.form-adicionar input,
+.form-adicionar select {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* Avaliações Page */
+.lista-avaliacoes {
+  list-style: none;
+  padding: 0;
+}
+
+.avaliacao-item {
+  background-color: #fff;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-left: 5px solid var(--secondary-color);
+  border-radius: 4px;
+}
+
+.avaliacao-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.avaliacao-actions {
+  margin-top: 10px;
+}
+
+.avaliacao-actions button {
+  margin-right: 10px;
+}
+
+.avaliacao-edicao select,
+.avaliacao-edicao textarea,
+.avaliacao-edicao input {
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.form-adicionar select,
+.form-adicionar textarea,
+.form-adicionar input {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
 }

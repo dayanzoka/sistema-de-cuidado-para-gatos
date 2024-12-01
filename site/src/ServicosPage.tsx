@@ -70,11 +70,11 @@ function ServicosPage() {
   return (
     <div>
       <h2>Serviços</h2>
-      <ul>
+      <ul className="lista-servicos">
         {servicos.map((s) => (
-          <li key={s.id}>
+          <li key={s.id} className="servico-item">
             {editandoServico && editandoServico.id === s.id ? (
-              <div>
+              <div className="servico-edicao">
                 <input
                   value={editandoServico.nomeServico}
                   onChange={(e) =>
@@ -97,32 +97,36 @@ function ServicosPage() {
                 <button onClick={cancelarEdicao}>Cancelar</button>
               </div>
             ) : (
-              <div>
-                {s.nomeServico} - {s.localizacao}
-                <button onClick={() => iniciarEdicao(s)}>Editar</button>
-                <button onClick={() => deletarServico(s.id)}>Excluir</button>
+              <div className="servico-info">
+                <strong>{s.nomeServico}</strong> - {s.localizacao}
+                <div className="servico-actions">
+                  <button onClick={() => iniciarEdicao(s)}>Editar</button>
+                  <button onClick={() => deletarServico(s.id)}>Excluir</button>
+                </div>
               </div>
             )}
           </li>
         ))}
       </ul>
       <h3>Adicionar Serviço</h3>
-      <input
-        placeholder="Nome do Serviço"
-        value={nomeServico}
-        onChange={(e) => setNomeServico(e.target.value)}
-      />
-      <input
-        placeholder="Descrição"
-        value={descricao}
-        onChange={(e) => setDescricao(e.target.value)}
-      />
-      <input
-        placeholder="Localização"
-        value={localizacao}
-        onChange={(e) => setLocalizacao(e.target.value)}
-      />
-      <button onClick={adicionarServico}>Adicionar</button>
+      <div className="form-adicionar">
+        <input
+          placeholder="Nome do Serviço"
+          value={nomeServico}
+          onChange={(e) => setNomeServico(e.target.value)}
+        />
+        <input
+          placeholder="Descrição"
+          value={descricao}
+          onChange={(e) => setDescricao(e.target.value)}
+        />
+        <input
+          placeholder="Localização"
+          value={localizacao}
+          onChange={(e) => setLocalizacao(e.target.value)}
+        />
+        <button onClick={adicionarServico}>Adicionar</button>
+      </div>
     </div>
   );
 }

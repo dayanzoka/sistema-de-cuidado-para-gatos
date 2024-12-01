@@ -70,11 +70,11 @@ function UsuariosPage() {
   return (
     <div>
       <h2>Usuários</h2>
-      <ul>
+      <ul className="lista-usuarios">
         {usuarios.map((u) => (
-          <li key={u.id}>
+          <li key={u.id} className="usuario-item">
             {editandoUsuario && editandoUsuario.id === u.id ? (
-              <div>
+              <div className="usuario-edicao">
                 <input
                   value={editandoUsuario.nome}
                   onChange={(e) =>
@@ -97,20 +97,24 @@ function UsuariosPage() {
                 <button onClick={cancelarEdicao}>Cancelar</button>
               </div>
             ) : (
-              <div>
-                {u.nome} - {u.email}
-                <button onClick={() => iniciarEdicao(u)}>Editar</button>
-                <button onClick={() => deletarUsuario(u.id)}>Excluir</button>
+              <div className="usuario-info">
+                <strong>{u.nome}</strong> - {u.email}
+                <div className="usuario-actions">
+                  <button onClick={() => iniciarEdicao(u)}>Editar</button>
+                  <button onClick={() => deletarUsuario(u.id)}>Excluir</button>
+                </div>
               </div>
             )}
           </li>
         ))}
       </ul>
       <h3>Adicionar Usuário</h3>
-      <input placeholder="Nome" value={nome} onChange={(e) => setNome(e.target.value)} />
-      <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <input placeholder="Senha" value={senha} onChange={(e) => setSenha(e.target.value)} />
-      <button onClick={adicionarUsuario}>Adicionar</button>
+      <div className="form-adicionar">
+        <input placeholder="Nome" value={nome} onChange={(e) => setNome(e.target.value)} />
+        <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input placeholder="Senha" value={senha} onChange={(e) => setSenha(e.target.value)} />
+        <button onClick={adicionarUsuario}>Adicionar</button>
+      </div>
     </div>
   );
 }

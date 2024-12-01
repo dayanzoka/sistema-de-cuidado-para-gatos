@@ -99,11 +99,11 @@ function AgendamentosPage() {
   return (
     <div>
       <h2>Agendamentos</h2>
-      <ul>
+      <ul className="lista-agendamentos">
         {agendamentos.map((ag) => (
-          <li key={ag.id}>
+          <li key={ag.id} className="agendamento-item">
             {editandoAgendamento && editandoAgendamento.id === ag.id ? (
-              <div>
+              <div className="agendamento-edicao">
                 <input
                   type="datetime-local"
                   value={editandoAgendamento.dataHora}
@@ -114,7 +114,10 @@ function AgendamentosPage() {
                 <select
                   value={editandoAgendamento.usuarioId}
                   onChange={(e) =>
-                    setEditandoAgendamento({ ...editandoAgendamento, usuarioId: parseInt(e.target.value) })
+                    setEditandoAgendamento({
+                      ...editandoAgendamento,
+                      usuarioId: parseInt(e.target.value),
+                    })
                   }
                 >
                   <option value="">Selecione um usuário</option>
@@ -127,7 +130,10 @@ function AgendamentosPage() {
                 <select
                   value={editandoAgendamento.servicoId}
                   onChange={(e) =>
-                    setEditandoAgendamento({ ...editandoAgendamento, servicoId: parseInt(e.target.value) })
+                    setEditandoAgendamento({
+                      ...editandoAgendamento,
+                      servicoId: parseInt(e.target.value),
+                    })
                   }
                 >
                   <option value="">Selecione um serviço</option>
@@ -141,38 +147,44 @@ function AgendamentosPage() {
                 <button onClick={cancelarEdicao}>Cancelar</button>
               </div>
             ) : (
-              <div>
-                {new Date(ag.dataHora).toLocaleString()} - Usuário {usuarios.find((u) => u.id === ag.usuarioId)?.nome || ag.usuarioId} - Serviço {servicos.find((s) => s.id === ag.servicoId)?.nomeServico || ag.servicoId}
-                <button onClick={() => iniciarEdicao(ag)}>Editar</button>
-                <button onClick={() => deletarAgendamento(ag.id)}>Excluir</button>
+              <div className="agendamento-info">
+                {new Date(ag.dataHora).toLocaleString()} - Usuário{' '}
+                {usuarios.find((u) => u.id === ag.usuarioId)?.nome || ag.usuarioId} - Serviço{' '}
+                {servicos.find((s) => s.id === ag.servicoId)?.nomeServico || ag.servicoId}
+                <div className="agendamento-actions">
+                  <button onClick={() => iniciarEdicao(ag)}>Editar</button>
+                  <button onClick={() => deletarAgendamento(ag.id)}>Excluir</button>
+                </div>
               </div>
             )}
           </li>
         ))}
       </ul>
       <h3>Adicionar Agendamento</h3>
-      <input
-        type="datetime-local"
-        value={dataHora}
-        onChange={(e) => setDataHora(e.target.value)}
-      />
-      <select value={usuarioId || ''} onChange={(e) => setUsuarioId(parseInt(e.target.value))}>
-        <option value="">Selecione um usuário</option>
-        {usuarios.map((u) => (
-          <option key={u.id} value={u.id}>
-            {u.nome}
-          </option>
-        ))}
-      </select>
-      <select value={servicoId || ''} onChange={(e) => setServicoId(parseInt(e.target.value))}>
-        <option value="">Selecione um serviço</option>
-        {servicos.map((s) => (
-          <option key={s.id} value={s.id}>
-            {s.nomeServico}
-          </option>
-        ))}
-      </select>
-      <button onClick={adicionarAgendamento}>Adicionar</button>
+      <div className="form-adicionar">
+        <input
+          type="datetime-local"
+          value={dataHora}
+          onChange={(e) => setDataHora(e.target.value)}
+        />
+        <select value={usuarioId || ''} onChange={(e) => setUsuarioId(parseInt(e.target.value))}>
+          <option value="">Selecione um usuário</option>
+          {usuarios.map((u) => (
+            <option key={u.id} value={u.id}>
+              {u.nome}
+            </option>
+          ))}
+        </select>
+        <select value={servicoId || ''} onChange={(e) => setServicoId(parseInt(e.target.value))}>
+          <option value="">Selecione um serviço</option>
+          {servicos.map((s) => (
+            <option key={s.id} value={s.id}>
+              {s.nomeServico}
+            </option>
+          ))}
+        </select>
+        <button onClick={adicionarAgendamento}>Adicionar</button>
+      </div>
     </div>
   );
 }
