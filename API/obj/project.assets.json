@@ -2386,11 +2386,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\dday5\\Documents\\ServicosParaGatos\\API\\API.csproj",
+      "projectUniqueName": "C:\\Users\\dday5\\Documents\\GitHub\\projeto-final---software-visual\\API\\API.csproj",
       "projectName": "API",
-      "projectPath": "C:\\Users\\dday5\\Documents\\ServicosParaGatos\\API\\API.csproj",
+      "projectPath": "C:\\Users\\dday5\\Documents\\GitHub\\projeto-final---software-visual\\API\\API.csproj",
       "packagesPath": "C:\\Users\\dday5\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\dday5\\Documents\\ServicosParaGatos\\API\\obj\\",
+      "outputPath": "C:\\Users\\dday5\\Documents\\GitHub\\projeto-final---software-visual\\API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\dday5\\AppData\\Roaming\\NuGet\\NuGet.Config"
