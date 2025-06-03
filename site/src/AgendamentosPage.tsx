@@ -98,7 +98,7 @@ function AgendamentosPage() {
 
   return (
     <div>
-      <h2>Agendamentos</h2>
+      <h2 className="titulo-usuarios">Agendamentos</h2>
       <ul className="lista-agendamentos">
         {agendamentos.map((ag) => (
           <li key={ag.id} className="agendamento-item">
@@ -160,7 +160,7 @@ function AgendamentosPage() {
           </li>
         ))}
       </ul>
-      <h3>Adicionar Agendamento</h3>
+      <h3 className="titulo-usuarios">Adicionar Agendamento</h3>
       <div className="form-adicionar">
         <input
           type="datetime-local"

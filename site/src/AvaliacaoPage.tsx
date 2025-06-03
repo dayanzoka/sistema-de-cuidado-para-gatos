@@ -101,7 +101,7 @@ function AvaliacaoPage() {
 
   return (
     <div>
-      <h2>Avaliações</h2>
+      <h2 className="titulo-usuarios">Avaliações</h2>
       <ul className="lista-avaliacoes">
         {avaliacoes.map((av) => (
           <li key={av.id} className="avaliacao-item">
@@ -175,7 +175,7 @@ function AvaliacaoPage() {
           </li>
         ))}
       </ul>
-      <h3>Adicionar Avaliação</h3>
+      <h3 className="avalie-aqui">Adicionar Avaliação</h3>
       <div className="form-adicionar">
         <select value={usuarioId || ''} onChange={(e) => setUsuarioId(parseInt(e.target.value))}>
           <option value="">Selecione um usuário</option>

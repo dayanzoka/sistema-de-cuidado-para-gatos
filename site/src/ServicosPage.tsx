@@ -69,7 +69,7 @@ function ServicosPage() {
 
   return (
     <div>
-      <h2>Serviços</h2>
+      <h2 className="titulo-usuarios">Serviços</h2>
       <ul className="lista-servicos">
         {servicos.map((s) => (
           <li key={s.id} className="servico-item">
@@ -108,7 +108,7 @@ function ServicosPage() {
           </li>
         ))}
       </ul>
-      <h3>Adicionar Serviço</h3>
+      <h3 className="titulo-usuarios">Adicionar Serviço</h3>
       <div className="form-adicionar">
         <input
           placeholder="Nome do Serviço"

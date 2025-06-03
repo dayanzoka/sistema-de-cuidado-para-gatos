@@ -69,7 +69,7 @@ function UsuariosPage() {
 
   return (
     <div>
-      <h2>Usuários</h2>
+      <h2 className="titulo-usuarios">Usuários:</h2>
       <ul className="lista-usuarios">
         {usuarios.map((u) => (
           <li key={u.id} className="usuario-item">
@@ -108,7 +108,7 @@ function UsuariosPage() {
           </li>
         ))}
       </ul>
-      <h3>Adicionar Usuário</h3>
+      <h3 className="titulo-usuarios">Adicionar Usuário</h3>
       <div className="form-adicionar">
         <input placeholder="Nome" value={nome} onChange={(e) => setNome(e.target.value)} />
         <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
