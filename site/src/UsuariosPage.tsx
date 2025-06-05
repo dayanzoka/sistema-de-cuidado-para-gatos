@@ -7,6 +7,8 @@ interface Usuario {
   senha: string;
 }
 
+const API_BASE_URL = 'https://sistema-de-cuidado-para-gatos.onrender.com';
+
 function UsuariosPage() {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [nome, setNome] = useState('');
@@ -19,23 +21,32 @@ function UsuariosPage() {
   }, []);
 
   const fetchUsuarios = () => {
-    fetch('http://localhost:5221/usuarios/listar')
+    fetch(`${API_BASE_URL}/usuarios/listar`) 
       .then((res) => res.json())
-      .then(setUsuarios);
+      .then(setUsuarios)
+      .catch((error) => console.error('Erro ao buscar usuários:', error)); 
   };
 
   const adicionarUsuario = () => {
     const novoUsuario = { nome, email, senha };
-    fetch('http://localhost:5221/usuarios/cadastrar', {
+    fetch(`${API_BASE_URL}/usuarios/cadastrar`, { 
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(novoUsuario),
-    }).then(() => {
-      setNome('');
-      setEmail('');
-      setSenha('');
-      fetchUsuarios();
-    });
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then(() => {
+        setNome('');
+        setEmail('');
+        setSenha('');
+        fetchUsuarios();
+      })
+      .catch((error) => console.error('Erro ao adicionar usuário:', error)); // Adicionado tratamento de erro
   };
 
   const iniciarEdicao = (usuario: Usuario) => {
@@ -48,22 +59,38 @@ function UsuariosPage() {
 
   const atualizarUsuario = () => {
     if (!editandoUsuario) return;
-    fetch(`http://localhost:5221/usuarios/atualizar/${editandoUsuario.id}`, {
+    fetch(`${API_BASE_URL}/usuarios/atualizar/${editandoUsuario.id}`, { // URL ATUALIZADA
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(editandoUsuario),
-    }).then(() => {
-      setEditandoUsuario(null);
-      fetchUsuarios();
-    });
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then(() => {
+        setEditandoUsuario(null);
+        fetchUsuarios();
+      })
+      .catch((error) => console.error('Erro ao atualizar usuário:', error)); // Adicionado tratamento de erro
   };
 
   const deletarUsuario = (id: number) => {
-    fetch(`http://localhost:5221/usuarios/deletar/${id}`, {
+    fetch(`${API_BASE_URL}/usuarios/deletar/${id}`, { // URL ATUALIZADA
       method: 'DELETE',
-    }).then(() => {
-      fetchUsuarios();
-    });
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        // Não retorna JSON em DELETE, só verifica o status
+      })
+      .then(() => {
+        fetchUsuarios();
+      })
+      .catch((error) => console.error('Erro ao deletar usuário:', error)); // Adicionado tratamento de erro
   };
 
   return (
@@ -87,7 +114,7 @@ function UsuariosPage() {
                   }
                 />
                 <input
-                  value={editandoUsuario.senha} 
+                  value={editandoUsuario.senha}
                   onChange={(e) =>
                     setEditandoUsuario({ ...editandoUsuario, senha: e.target.value })
                   }

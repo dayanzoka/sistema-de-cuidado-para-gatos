@@ -7,6 +7,9 @@ interface Servico {
   localizacao: string;
 }
 
+// Defina a URL base da sua API do Render.com aqui
+const API_BASE_URL = 'https://sistema-de-cuidado-para-gatos.onrender.com';
+
 function ServicosPage() {
   const [servicos, setServicos] = useState<Servico[]>([]);
   const [nomeServico, setNomeServico] = useState('');
@@ -19,23 +22,32 @@ function ServicosPage() {
   }, []);
 
   const fetchServicos = () => {
-    fetch('http://localhost:5221/servicos/listar')
+    fetch(`${API_BASE_URL}/servicos/listar`) // URL ATUALIZADA
       .then((res) => res.json())
-      .then(setServicos);
+      .then(setServicos)
+      .catch((error) => console.error('Erro ao buscar serviços:', error)); // Adicionado tratamento de erro
   };
 
   const adicionarServico = () => {
     const novoServico = { nomeServico, descricao, localizacao };
-    fetch('http://localhost:5221/servicos/cadastrar', {
+    fetch(`${API_BASE_URL}/servicos/cadastrar`, { // URL ATUALIZADA
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(novoServico),
-    }).then(() => {
-      setNomeServico('');
-      setDescricao('');
-      setLocalizacao('');
-      fetchServicos();
-    });
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then(() => {
+        setNomeServico('');
+        setDescricao('');
+        setLocalizacao('');
+        fetchServicos();
+      })
+      .catch((error) => console.error('Erro ao adicionar serviço:', error)); // Adicionado tratamento de erro
   };
 
   const iniciarEdicao = (servico: Servico) => {
@@ -48,23 +60,39 @@ function ServicosPage() {
 
   const atualizarServico = () => {
     if (editandoServico) {
-      fetch(`http://localhost:5221/servicos/atualizar/${editandoServico.id}`, {
+      fetch(`${API_BASE_URL}/servicos/atualizar/${editandoServico.id}`, { // URL ATUALIZADA
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editandoServico),
-      }).then(() => {
-        setEditandoServico(null);
-        fetchServicos();
-      });
+      })
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+          return res.json();
+        })
+        .then(() => {
+          setEditandoServico(null);
+          fetchServicos();
+        })
+        .catch((error) => console.error('Erro ao atualizar serviço:', error)); // Adicionado tratamento de erro
     }
   };
 
   const deletarServico = (id: number) => {
-    fetch(`http://localhost:5221/servicos/deletar/${id}`, {
+    fetch(`${API_BASE_URL}/servicos/deletar/${id}`, { // URL ATUALIZADA
       method: 'DELETE',
-    }).then(() => {
-      fetchServicos();
-    });
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        // Não retorna JSON em DELETE, só verifica o status
+      })
+      .then(() => {
+        fetchServicos();
+      })
+      .catch((error) => console.error('Erro ao deletar serviço:', error)); // Adicionado tratamento de erro
   };
 
   return (

@@ -18,6 +18,9 @@ interface Avaliacao {
   nota: number;
 }
 
+// Defina a URL base da sua API do Render.com aqui
+const API_BASE_URL = 'https://sistema-de-cuidado-para-gatos.onrender.com';
+
 function AvaliacaoPage() {
   const [avaliacoes, setAvaliacoes] = useState<Avaliacao[]>([]);
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
@@ -35,36 +38,65 @@ function AvaliacaoPage() {
   }, []);
 
   const fetchAvaliacoes = async () => {
-    const response = await fetch('http://localhost:5221/avaliacoes/listar');
-    const data = await response.json();
-    setAvaliacoes(data);
+    try {
+      const response = await fetch(`${API_BASE_URL}/avaliacoes/listar`); // URL ATUALIZADA
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setAvaliacoes(data);
+    } catch (error) {
+      console.error('Erro ao buscar avaliações:', error);
+    }
   };
 
   const fetchUsuarios = async () => {
-    const response = await fetch('http://localhost:5221/usuarios/listar');
-    const data = await response.json();
-    setUsuarios(data);
+    try {
+      const response = await fetch(`${API_BASE_URL}/usuarios/listar`); // URL ATUALIZADA
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setUsuarios(data);
+    } catch (error) {
+      console.error('Erro ao buscar usuários para avaliação:', error);
+    }
   };
 
   const fetchServicos = async () => {
-    const response = await fetch('http://localhost:5221/servicos/listar');
-    const data = await response.json();
-    setServicos(data);
+    try {
+      const response = await fetch(`${API_BASE_URL}/servicos/listar`); // URL ATUALIZADA
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setServicos(data);
+    } catch (error) {
+      console.error('Erro ao buscar serviços para avaliação:', error);
+    }
   };
 
   const adicionarAvaliacao = async () => {
     if (usuarioId && servicoId && comentario && nota >= 1 && nota <= 10) {
       const novaAvaliacao = { usuarioId, servicoId, comentario, nota };
-      await fetch('http://localhost:5221/avaliacoes/cadastrar', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(novaAvaliacao),
-      });
-      setUsuarioId(null);
-      setServicoId(null);
-      setComentario('');
-      setNota(1);
-      fetchAvaliacoes();
+      try {
+        const response = await fetch(`${API_BASE_URL}/avaliacoes/cadastrar`, { // URL ATUALIZADA
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(novaAvaliacao),
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        setUsuarioId(null);
+        setServicoId(null);
+        setComentario('');
+        setNota(1);
+        fetchAvaliacoes();
+      } catch (error) {
+        console.error('Erro ao adicionar avaliação:', error);
+        alert('Erro ao adicionar avaliação. Verifique o console.');
+      }
     } else {
       alert('Preencha todos os campos corretamente.');
     }
@@ -80,23 +112,39 @@ function AvaliacaoPage() {
 
   const atualizarAvaliacao = async () => {
     if (editandoAvaliacao && editandoAvaliacao.nota >= 1 && editandoAvaliacao.nota <= 10) {
-      await fetch(`http://localhost:5221/avaliacoes/atualizar/${editandoAvaliacao.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(editandoAvaliacao),
-      });
-      setEditandoAvaliacao(null);
-      fetchAvaliacoes();
+      try {
+        const response = await fetch(`${API_BASE_URL}/avaliacoes/atualizar/${editandoAvaliacao.id}`, { // URL ATUALIZADA
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(editandoAvaliacao),
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        setEditandoAvaliacao(null);
+        fetchAvaliacoes();
+      } catch (error) {
+        console.error('Erro ao atualizar avaliação:', error);
+        alert('Erro ao atualizar avaliação. Verifique o console.');
+      }
     } else {
       alert('Preencha todos os campos corretamente.');
     }
   };
 
   const deletarAvaliacao = async (id: number) => {
-    await fetch(`http://localhost:5221/avaliacoes/deletar/${id}`, {
-      method: 'DELETE',
-    });
-    fetchAvaliacoes();
+    try {
+      const response = await fetch(`${API_BASE_URL}/avaliacoes/deletar/${id}`, { // URL ATUALIZADA
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      fetchAvaliacoes();
+    } catch (error) {
+      console.error('Erro ao deletar avaliação:', error);
+      alert('Erro ao deletar avaliação. Verifique o console.');
+    }
   };
 
   return (

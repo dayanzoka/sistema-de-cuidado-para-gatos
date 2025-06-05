@@ -17,6 +17,9 @@ interface Agendamento {
   servicoId: number;
 }
 
+// Defina a URL base da sua API do Render.com aqui
+const API_BASE_URL = 'https://sistema-de-cuidado-para-gatos.onrender.com';
+
 function AgendamentosPage() {
   const [agendamentos, setAgendamentos] = useState<Agendamento[]>([]);
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
@@ -33,35 +36,64 @@ function AgendamentosPage() {
   }, []);
 
   const fetchAgendamentos = async () => {
-    const response = await fetch('http://localhost:5221/agendamentos/listar');
-    const data = await response.json();
-    setAgendamentos(data);
+    try {
+      const response = await fetch(`${API_BASE_URL}/agendamentos/listar`); // URL ATUALIZADA
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setAgendamentos(data);
+    } catch (error) {
+      console.error('Erro ao buscar agendamentos:', error);
+    }
   };
 
   const fetchUsuarios = async () => {
-    const response = await fetch('http://localhost:5221/usuarios/listar');
-    const data = await response.json();
-    setUsuarios(data);
+    try {
+      const response = await fetch(`${API_BASE_URL}/usuarios/listar`); // URL ATUALIZADA
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setUsuarios(data);
+    } catch (error) {
+      console.error('Erro ao buscar usuários para agendamento:', error);
+    }
   };
 
   const fetchServicos = async () => {
-    const response = await fetch('http://localhost:5221/servicos/listar');
-    const data = await response.json();
-    setServicos(data);
+    try {
+      const response = await fetch(`${API_BASE_URL}/servicos/listar`); // URL ATUALIZADA
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setServicos(data);
+    } catch (error) {
+      console.error('Erro ao buscar serviços para agendamento:', error);
+    }
   };
 
   const adicionarAgendamento = async () => {
     if (usuarioId && servicoId && dataHora) {
       const novoAgendamento = { dataHora, usuarioId, servicoId };
-      await fetch('http://localhost:5221/agendamentos/cadastrar', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(novoAgendamento),
-      });
-      setDataHora('');
-      setUsuarioId(null);
-      setServicoId(null);
-      fetchAgendamentos();
+      try {
+        const response = await fetch(`${API_BASE_URL}/agendamentos/cadastrar`, { // URL ATUALIZADA
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(novoAgendamento),
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        setDataHora('');
+        setUsuarioId(null);
+        setServicoId(null);
+        fetchAgendamentos();
+      } catch (error) {
+        console.error('Erro ao adicionar agendamento:', error);
+        alert('Erro ao adicionar agendamento. Verifique o console.');
+      }
     } else {
       alert('Preencha todos os campos.');
     }
@@ -77,23 +109,39 @@ function AgendamentosPage() {
 
   const atualizarAgendamento = async () => {
     if (editandoAgendamento && editandoAgendamento.dataHora) {
-      await fetch(`http://localhost:5221/agendamentos/atualizar/${editandoAgendamento.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(editandoAgendamento),
-      });
-      setEditandoAgendamento(null);
-      fetchAgendamentos();
+      try {
+        const response = await fetch(`${API_BASE_URL}/agendamentos/atualizar/${editandoAgendamento.id}`, { // URL ATUALIZADA
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(editandoAgendamento),
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        setEditandoAgendamento(null);
+        fetchAgendamentos();
+      } catch (error) {
+        console.error('Erro ao atualizar agendamento:', error);
+        alert('Erro ao atualizar agendamento. Verifique o console.');
+      }
     } else {
       alert('Preencha todos os campos.');
     }
   };
 
   const deletarAgendamento = async (id: number) => {
-    await fetch(`http://localhost:5221/agendamentos/deletar/${id}`, {
-      method: 'DELETE',
-    });
-    fetchAgendamentos();
+    try {
+      const response = await fetch(`${API_BASE_URL}/agendamentos/deletar/${id}`, { // URL ATUALIZADA
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      fetchAgendamentos();
+    } catch (error) {
+      console.error('Erro ao deletar agendamento:', error);
+      alert('Erro ao deletar agendamento. Verifique o console.');
+    }
   };
 
   return (
