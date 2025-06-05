@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ServicosParaGatos.Data;
 using ServicosParaGatos.Models;
-using Npgsql.EntityFrameworkCore.PostgreSQL;
+using Npgsql.EntityFrameworkCore.PostgreSQL; 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,15 +9,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Configuração do CORS
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowAll", policy => 
     {
-        options.AddPolicy("AllowAll", 
-            policy => policy.WithOrigins("https://sistema-de-cuidado-para-gatos.vercel.app") 
-                            .AllowAnyHeader()
-                            .AllowAnyMethod());
+        policy.WithOrigins("https://sistema-de-cuidado-para-gatos.vercel.app") 
+              .AllowAnyHeader()
+              .AllowAnyMethod();
     });
 });
 
@@ -46,7 +45,7 @@ app.MapPut("/usuarios/atualizar/{id}", async (int id, Usuario updatedUsuario, Ap
 
     usuario.Nome = updatedUsuario.Nome;
     usuario.Email = updatedUsuario.Email;
-    usuario.Senha = updatedUsuario.Senha; // AQUI ESTÁ A ATUALIZAÇÃO DA SENHA
+    usuario.Senha = updatedUsuario.Senha; 
 
     await db.SaveChangesAsync();
     return Results.Ok(usuario);
