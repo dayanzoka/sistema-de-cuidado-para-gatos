@@ -14,11 +14,13 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.WithOrigins("https://sistema-de-cuidado-para-gatos.vercel.app/")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        options.AddPolicy("AllowAll", 
+            policy => policy.WithOrigins("https://sistema-de-cuidado-para-gatos.vercel.app") 
+                            .AllowAnyHeader()
+                            .AllowAnyMethod());
     });
 });
+
 
 var app = builder.Build();
 
