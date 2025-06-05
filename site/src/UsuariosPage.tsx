@@ -47,16 +47,15 @@ function UsuariosPage() {
   };
 
   const atualizarUsuario = () => {
-    if (editandoUsuario) {
-      fetch(`http://localhost:5221/usuarios/atualizar/${editandoUsuario.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(editandoUsuario),
-      }).then(() => {
-        setEditandoUsuario(null);
-        fetchUsuarios();
-      });
-    }
+    if (!editandoUsuario) return;
+    fetch(`http://localhost:5221/usuarios/atualizar/${editandoUsuario.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(editandoUsuario),
+    }).then(() => {
+      setEditandoUsuario(null);
+      fetchUsuarios();
+    });
   };
 
   const deletarUsuario = (id: number) => {
@@ -69,12 +68,12 @@ function UsuariosPage() {
 
   return (
     <div>
-      <h2 className="titulo-usuarios">Usuários:</h2>
-      <ul className="lista-usuarios">
+      <h2 className="titulo-usuarios">Lista de Usuários</h2>
+      <ul className="lista-itens">
         {usuarios.map((u) => (
-          <li key={u.id} className="usuario-item">
-            {editandoUsuario && editandoUsuario.id === u.id ? (
-              <div className="usuario-edicao">
+          <li key={u.id}>
+            {editandoUsuario?.id === u.id ? (
+              <div className="form-edicao">
                 <input
                   value={editandoUsuario.nome}
                   onChange={(e) =>
@@ -88,7 +87,7 @@ function UsuariosPage() {
                   }
                 />
                 <input
-                  value={editandoUsuario.senha}
+                  value={editandoUsuario.senha} 
                   onChange={(e) =>
                     setEditandoUsuario({ ...editandoUsuario, senha: e.target.value })
                   }

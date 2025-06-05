@@ -43,7 +43,7 @@ app.MapPut("/usuarios/atualizar/{id}", async (int id, Usuario updatedUsuario, Ap
 
     usuario.Nome = updatedUsuario.Nome;
     usuario.Email = updatedUsuario.Email;
-    usuario.Senha = updatedUsuario.Senha;
+    usuario.Senha = updatedUsuario.Senha; // AQUI ESTÁ A ATUALIZAÇÃO DA SENHA
 
     await db.SaveChangesAsync();
     return Results.Ok(usuario);
@@ -56,8 +56,9 @@ app.MapDelete("/usuarios/deletar/{id}", async (int id, AppDbContext db) =>
 
     db.Usuarios.Remove(usuario);
     await db.SaveChangesAsync();
-    return Results.Ok(usuario);
+    return Results.NoContent();
 });
+
 
 // Serviços
 app.MapGet("/servicos/listar", async (AppDbContext db) => await db.Servicos.ToListAsync());
@@ -89,11 +90,14 @@ app.MapDelete("/servicos/deletar/{id}", async (int id, AppDbContext db) =>
 
     db.Servicos.Remove(servico);
     await db.SaveChangesAsync();
-    return Results.Ok(servico);
+    return Results.NoContent();
 });
 
 // Agendamentos
-app.MapGet("/agendamentos/listar", async (AppDbContext db) => await db.Agendamentos.ToListAsync());
+app.MapGet("/agendamentos/listar", async (AppDbContext db) => await db.Agendamentos
+    .Include(a => a.Usuario)
+    .Include(a => a.Servico)
+    .ToListAsync());
 
 app.MapPost("/agendamentos/cadastrar", async (Agendamento agendamento, AppDbContext db) =>
 {
@@ -103,22 +107,31 @@ app.MapPost("/agendamentos/cadastrar", async (Agendamento agendamento, AppDbCont
     var servico = await db.Servicos.FindAsync(agendamento.ServicoId);
     if (servico == null) return Results.NotFound("Serviço não encontrado");
 
-    agendamento.Usuario = usuario;
-    agendamento.Servico = servico;
+    agendamento.Usuario = usuario; // Atribui o objeto completo
+    agendamento.Servico = servico; // Atribui o objeto completo
 
     db.Agendamentos.Add(agendamento);
     await db.SaveChangesAsync();
     return Results.Created($"/agendamentos/{agendamento.Id}", agendamento);
 });
 
+
 app.MapPut("/agendamentos/atualizar/{id}", async (int id, Agendamento updatedAgendamento, AppDbContext db) =>
 {
     var agendamento = await db.Agendamentos.FindAsync(id);
     if (agendamento == null) return Results.NotFound();
 
+    var usuario = await db.Usuarios.FindAsync(updatedAgendamento.UsuarioId);
+    if (usuario == null) return Results.NotFound("Usuário não encontrado");
+
+    var servico = await db.Servicos.FindAsync(updatedAgendamento.ServicoId);
+    if (servico == null) return Results.NotFound("Serviço não encontrado");
+
     agendamento.DataHora = updatedAgendamento.DataHora;
     agendamento.UsuarioId = updatedAgendamento.UsuarioId;
     agendamento.ServicoId = updatedAgendamento.ServicoId;
+    agendamento.Usuario = usuario; // Atualiza o objeto completo
+    agendamento.Servico = servico; // Atualiza o objeto completo
 
     await db.SaveChangesAsync();
     return Results.Ok(agendamento);
@@ -131,7 +144,7 @@ app.MapDelete("/agendamentos/deletar/{id}", async (int id, AppDbContext db) =>
 
     db.Agendamentos.Remove(agendamento);
     await db.SaveChangesAsync();
-    return Results.Ok(agendamento);
+    return Results.NoContent();
 });
 
 // Avaliações
@@ -174,7 +187,7 @@ app.MapDelete("/avaliacoes/deletar/{id}", async (int id, AppDbContext db) =>
 
     db.Avaliacoes.Remove(avaliacao);
     await db.SaveChangesAsync();
-    return Results.Ok(avaliacao);
+    return Results.NoContent();
 });
 
 app.Run();
