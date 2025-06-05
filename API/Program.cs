@@ -1,12 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using ServicosParaGatos.Data;
 using ServicosParaGatos.Models;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuração do banco de dados
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Configuração do CORS
 builder.Services.AddCors(options =>
