@@ -5,24 +5,28 @@ using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Lendo diretamente a variável de ambiente para a string de conexão
 var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
 
+// Log para depuração para verificar a string de conexão lida
 Console.WriteLine($"DEBUG: Connection String lida: {connectionString ?? "NULL ou VAZIA"} (Lida diretamente da variável de ambiente)");
 
-
+// Verifica se a string de conexão foi obtida com sucesso
 if (string.IsNullOrEmpty(connectionString))
 {
     throw new InvalidOperationException("Erro: A string de conexão 'ConnectionStrings__DefaultConnection' não foi configurada ou está vazia. Verifique as variáveis de ambiente no Render.com.");
 }
 
+// Configuração do DbContext com Npgsql (PostgreSQL)
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
+// Configuração do CORS para permitir qualquer origem (para depuração)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.AllowAnyOrigin() // Permite requisições de qualquer origem
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -30,7 +34,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// ADICIONADO: Bloco para aplicar as migrações no startup da aplicação
+// Bloco para aplicar as migrações no startup da aplicação
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -46,9 +50,8 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "Ocorreu um erro ao aplicar as migrações do banco de dados.");
     }
 }
-// FIM DO BLOCO DE MIGRAÇÕES
 
-// Aplicação do CORS
+// Aplicação da política CORS
 app.UseCors("AllowAll");
 
 // Mapeamento dos endpoints (seus endpoints permanecem os mesmos)
@@ -133,8 +136,8 @@ app.MapPost("/agendamentos/cadastrar", async (Agendamento agendamento, AppDbCont
     var servico = await db.Servicos.FindAsync(agendamento.ServicoId);
     if (servico == null) return Results.NotFound("Serviço não encontrado");
 
-    agendamento.Usuario = usuario; // Atribui o objeto completo
-    agendamento.Servico = servico; // Atribui o objeto completo
+    // ADICIONADO: Converte DataHora para UTC antes de salvar
+    agendamento.DataHora = agendamento.DataHora.ToUniversalTime(); 
 
     db.Agendamentos.Add(agendamento);
     await db.SaveChangesAsync();
@@ -152,11 +155,12 @@ app.MapPut("/agendamentos/atualizar/{id}", async (int id, Agendamento updatedAge
     var servico = await db.Servicos.FindAsync(updatedAgendamento.ServicoId);
     if (servico == null) return Results.NotFound("Serviço não encontrado");
 
-    agendamento.DataHora = updatedAgendamento.DataHora;
+    // ADICIONADO: Converte DataHora para UTC antes de atualizar
+    agendamento.DataHora = updatedAgendamento.DataHora.ToUniversalTime(); 
     agendamento.UsuarioId = updatedAgendamento.UsuarioId;
     agendamento.ServicoId = updatedAgendamento.ServicoId;
-    agendamento.Usuario = usuario; // Atualiza o objeto completo
-    agendamento.Servico = servico; // Atualiza o objeto completo
+    agendamento.Usuario = usuario; 
+    agendamento.Servico = servico; 
 
     await db.SaveChangesAsync();
     return Results.Ok(agendamento);
