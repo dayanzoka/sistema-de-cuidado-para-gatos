@@ -1,20 +1,23 @@
 using Microsoft.EntityFrameworkCore;
 using ServicosParaGatos.Data;
 using ServicosParaGatos.Models;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging; 
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ADICIONADO PARA DEPURAR: Leia e logue a string de conexão EXATA que o aplicativo está usando.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-Console.WriteLine($"DEBUG: Connection String lida: {connectionString ?? "NULL ou VAZIA"}"); 
+var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
 
-// Configuração do banco de dados
-// Usa a string de conexão lida acima
+Console.WriteLine($"DEBUG: Connection String lida: {connectionString ?? "NULL ou VAZIA"} (Lida diretamente da variável de ambiente)");
+
+
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("Erro: A string de conexão 'ConnectionStrings__DefaultConnection' não foi configurada ou está vazia. Verifique as variáveis de ambiente no Render.com.");
+}
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
-// Configuração do CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -27,7 +30,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// ADICIONADO: Bloco para aplicar as migrações
+// ADICIONADO: Bloco para aplicar as migrações no startup da aplicação
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -49,6 +52,7 @@ using (var scope = app.Services.CreateScope())
 app.UseCors("AllowAll");
 
 // Mapeamento dos endpoints (seus endpoints permanecem os mesmos)
+
 // Usuários
 app.MapGet("/usuarios/listar", async (AppDbContext db) => await db.Usuarios.ToListAsync());
 
