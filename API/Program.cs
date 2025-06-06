@@ -5,9 +5,14 @@ using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// ADICIONADO PARA DEPURAR: Leia e logue a string de conexão EXATA que o aplicativo está usando.
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+Console.WriteLine($"DEBUG: Connection String lida: {connectionString ?? "NULL ou VAZIA"}"); 
+
 // Configuração do banco de dados
+// Usa a string de conexão lida acima
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(connectionString));
 
 // Configuração do CORS
 builder.Services.AddCors(options =>
