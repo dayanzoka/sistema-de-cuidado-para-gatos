@@ -22,7 +22,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.WithOrigins("https://sistema-de-cuidado-para-gatos.vercel.app")
+        policy.AllowAnyOrigin()
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
