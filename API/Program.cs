@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ServicosParaGatos.Data;
 using ServicosParaGatos.Models;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,38 +9,33 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
+// Configuração do CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy => 
+    options.AddPolicy("AllowAll", policy =>
     {
-        policy.WithOrigins("https://sistema-de-cuidado-para-gatos.vercel.app") 
+        policy.WithOrigins("https://sistema-de-cuidado-para-gatos.vercel.app")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
 
-
 var app = builder.Build();
 
-// ADICIONE ESTE BLOCO DE CÓDIGO PARA APLICAR AS MIGRAÇÕES
-// Ele deve vir *após* var app = builder.Build(); e *antes* de app.UseCors() e dos seus app.MapGet/Post/Put/Delete.
+// ADICIONADO: Bloco para aplicar as migrações
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     try
     {
         var context = services.GetRequiredService<AppDbContext>();
-        context.Database.Migrate(); // Isso aplica todas as migrações pendentes
+        context.Database.Migrate(); // Aplica todas as migrações pendentes
         Console.WriteLine("Migrações do banco de dados aplicadas com sucesso!");
     }
     catch (Exception ex)
     {
-        // Certifique-se de ter Microsoft.Extensions.Logging.Abstractions ou Microsoft.Extensions.Logging instalado para ILogger
         var logger = services.GetRequiredService<ILogger<Program>>();
         logger.LogError(ex, "Ocorreu um erro ao aplicar as migrações do banco de dados.");
-        // Opcional: Você pode querer lançar a exceção ou parar a aplicação se as migrações forem críticas
-        // throw;
     }
 }
 // FIM DO BLOCO DE MIGRAÇÕES
@@ -47,8 +43,7 @@ using (var scope = app.Services.CreateScope())
 // Aplicação do CORS
 app.UseCors("AllowAll");
 
-// Mapeamento dos endpoints
-
+// Mapeamento dos endpoints (seus endpoints permanecem os mesmos)
 // Usuários
 app.MapGet("/usuarios/listar", async (AppDbContext db) => await db.Usuarios.ToListAsync());
 
@@ -66,7 +61,7 @@ app.MapPut("/usuarios/atualizar/{id}", async (int id, Usuario updatedUsuario, Ap
 
     usuario.Nome = updatedUsuario.Nome;
     usuario.Email = updatedUsuario.Email;
-    usuario.Senha = updatedUsuario.Senha; 
+    usuario.Senha = updatedUsuario.Senha;
 
     await db.SaveChangesAsync();
     return Results.Ok(usuario);
@@ -81,7 +76,6 @@ app.MapDelete("/usuarios/deletar/{id}", async (int id, AppDbContext db) =>
     await db.SaveChangesAsync();
     return Results.NoContent();
 });
-
 
 // Serviços
 app.MapGet("/servicos/listar", async (AppDbContext db) => await db.Servicos.ToListAsync());
@@ -137,7 +131,6 @@ app.MapPost("/agendamentos/cadastrar", async (Agendamento agendamento, AppDbCont
     await db.SaveChangesAsync();
     return Results.Created($"/agendamentos/{agendamento.Id}", agendamento);
 });
-
 
 app.MapPut("/agendamentos/atualizar/{id}", async (int id, Agendamento updatedAgendamento, AppDbContext db) =>
 {
