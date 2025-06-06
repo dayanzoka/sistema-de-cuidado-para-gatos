@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ServicosParaGatos.Data;
 using ServicosParaGatos.Models;
-using Npgsql.EntityFrameworkCore.PostgreSQL; 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +21,28 @@ builder.Services.AddCors(options =>
 
 
 var app = builder.Build();
+
+// ADICIONE ESTE BLOCO DE CÓDIGO PARA APLICAR AS MIGRAÇÕES
+// Ele deve vir *após* var app = builder.Build(); e *antes* de app.UseCors() e dos seus app.MapGet/Post/Put/Delete.
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+        context.Database.Migrate(); // Isso aplica todas as migrações pendentes
+        Console.WriteLine("Migrações do banco de dados aplicadas com sucesso!");
+    }
+    catch (Exception ex)
+    {
+        // Certifique-se de ter Microsoft.Extensions.Logging.Abstractions ou Microsoft.Extensions.Logging instalado para ILogger
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Ocorreu um erro ao aplicar as migrações do banco de dados.");
+        // Opcional: Você pode querer lançar a exceção ou parar a aplicação se as migrações forem críticas
+        // throw;
+    }
+}
+// FIM DO BLOCO DE MIGRAÇÕES
 
 // Aplicação do CORS
 app.UseCors("AllowAll");
